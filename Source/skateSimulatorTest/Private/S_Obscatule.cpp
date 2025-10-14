@@ -15,9 +15,6 @@ AS_Obscatule::AS_Obscatule()
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AS_Obscatule::BeginOverlapInteractZone);
 	RootComponent = CollisionBox;
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Obstacle"));
-	Mesh->SetupAttachment(RootComponent);
-
 	ArrowGuide = CreateDefaultSubobject<UArrowComponent>(TEXT("GUIDE"));
 	ArrowGuide->SetupAttachment(RootComponent);
 

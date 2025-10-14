@@ -37,9 +37,6 @@ private:
 	class UBoxComponent* CollisionBox;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
-	class UStaticMeshComponent* Mesh;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
 	class UArrowComponent* ArrowGuide;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = "true"))
