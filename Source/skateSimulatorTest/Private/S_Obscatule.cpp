@@ -13,6 +13,7 @@ AS_Obscatule::AS_Obscatule()
 
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("TriggerBox"));
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AS_Obscatule::BeginOverlapInteractZone);
+	CollisionBox->SetHiddenInGame(false);
 	RootComponent = CollisionBox;
 
 	ArrowGuide = CreateDefaultSubobject<UArrowComponent>(TEXT("GUIDE"));
@@ -49,6 +50,7 @@ void AS_Obscatule::SetObstacleState(EObstaculeState newState)
 		case EObstaculeState::EOS_Completed:
 			CollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			CollisionBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+			CollisionBox->SetVisibility(false);
 			ArrowGuide->SetVisibility(false);
 			break;
 		case EObstaculeState::EOS_NoCompleted:
