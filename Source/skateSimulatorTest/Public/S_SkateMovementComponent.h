@@ -26,8 +26,10 @@ public:
 	US_SkateMovementComponent();
 protected:
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Skate Movement", meta = (AllowPrivateAccess = "true"))
-	float AccelerationForce = 1000.0f;
+	float AccelerationForce = 0;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Skate Movement", meta = (AllowPrivateAccess = "true"))
+    float DesaccelerationForce = 200.0f;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Skate Movement", meta = (AllowPrivateAccess = "true"))
     float MaxSpeed = 2000.0f;
@@ -43,14 +45,18 @@ protected:
 
     FVector SkateVelocity;
 
-    float InputForward = 0.f;
-    float InputTurn = 0.f;
-
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly);
     FVector DirectionalVector;
 
     UPROPERTY(EditDefaultsOnly);
-    float lineDebugDistance=100.0f;
+    float lineDebugDistance=100.0f
+
+    UPROPERTY(EditDefaultsOnly);
+    float ForwardDistance = 100.0f;
+   
+    FVector GroundNormal;
+
+
 
     UPROPERTY(EditDefaultsOnly);
     bool bdebug;
@@ -65,6 +71,8 @@ protected:
 public:
 
      void Jump();
+
+     void AddAcelerationForce(float Value);
 
      FORCEINLINE void SetDirectional(FVector newValue) { DirectionalVector = newValue; };
      FORCEINLINE FVector GetDirectional() { return DirectionalVector; };

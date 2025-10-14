@@ -28,4 +28,5 @@ protected:
 	virtual void NativeInitializeAnimation() override;
 
 	virtual void NativeUpdateAnimation(float DeltaSecods) override;
+	
 };

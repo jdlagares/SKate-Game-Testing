@@ -7,6 +7,8 @@
 #include "Camera/CameraComponent.h"
 #include "S_SkateMovementComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Animation/AnimInstance.h"
+#include "Animation/AnimMontage.h"
 
 AS_Character::AS_Character(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<US_SkateMovementComponent>(TEXT("CharMoveComp")))
@@ -61,6 +63,7 @@ void AS_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		enhancedInputComp->BindAction(MoveAction, ETriggerEvent::Completed, this, &AS_Character::Move);
 		enhancedInputComp->BindAction(LookAtAction, ETriggerEvent::Triggered, this, &AS_Character::LookAt);
 		enhancedInputComp->BindAction(JumpAction, ETriggerEvent::Started, this, &AS_Character::Jump);
+		enhancedInputComp->BindAction(ImpulseAction, ETriggerEvent::Triggered, this, &AS_Character::Impulse);
 	}
 
 }
@@ -106,6 +109,21 @@ void AS_Character::Jump()
 	if (SkateMovementComp)
 	{
 		SkateMovementComp->Jump();
+	}
+}
+
+void AS_Character::Impulse()
+{
+	if (ImpulseMontage) {
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+		if (AnimInstance && !AnimInstance->Montage_IsPlaying(ImpulseMontage)) {
+			US_SkateMovementComponent* SkateMovementComp = Cast<US_SkateMovementComponent>(GetCharacterMovement());
+			if (SkateMovementComp) {
+				if (SkateMovementComp->GetIsGrounded()) {
+					AnimInstance->Montage_Play(ImpulseMontage, 1.0f);
+				}
+			}	
+		}
 	}
 }
 

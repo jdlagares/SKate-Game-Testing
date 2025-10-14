@@ -29,21 +29,25 @@ void US_SkateMovementComponent::PhysSkate(float DeltaTime, int32 Iterations)
 	// Detectar si está en el suelo
 	CheckGrounded();
 
+	FVector ImputDir = DirectionalVector.IsNearlyZero() ? PawnOwner->GetActorForwardVector() : DirectionalVector;
+
 	if (bIsGrounded)
 	{
 		// Movimiento con fricción
-		SkateVelocity +=  DirectionalVector * AccelerationForce * DeltaTime;
+		SkateVelocity += ImputDir * AccelerationForce * DeltaTime;
 		SkateVelocity *= Friction;
 	}
 	else
 	{
 		// Movimiento en el aire con control limitado
 
-		SkateVelocity +=  DirectionalVector * (AccelerationForce * AirControl) * DeltaTime;
+		SkateVelocity += ImputDir * (AccelerationForce * AirControl) * DeltaTime;
 		SkateVelocity.Z += GetGravityZ() * GravityScale * DeltaTime;
 	}
-
+	AccelerationForce = FMath::FInterpTo(AccelerationForce, 0.f, DeltaTime, 0.2f);
 	// Limitar velocidad
+	SkateVelocity.Z += GetGravityZ() * GravityScale * DeltaTime;
+	
 	if (SkateVelocity.Size() > MaxSpeed)
 		SkateVelocity = SkateVelocity.GetSafeNormal() * MaxSpeed;
 
@@ -116,5 +120,11 @@ void US_SkateMovementComponent::Jump()
 
 		SkateVelocity.Z = AdjustedJumpForce;
 	}
+}
+
+void US_SkateMovementComponent::AddAcelerationForce(float Value)
+{
+	AccelerationForce += Value;
+	AccelerationForce = FMath::Max(AccelerationForce, 0.f);
 }
 
